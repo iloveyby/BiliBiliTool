@@ -55,10 +55,10 @@ namespace Ray.BiliBiliTool.DomainService.Interfaces
         /// </summary>
         /// <param name="aid"></param>
         /// <returns></returns>
-        bool IsDonatedCoinsForVideo(string aid);
+        bool CanDonatedCoinsForVideo(string aid);
 
         List<UpVideoInfo> GetRandomVideosOfUps();
 
-        Tuple<string, string> TryGetNotDonatedVideo();
+        Tuple<string, string> TryGetCanDonatedVideo();
     }
 }
