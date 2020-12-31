@@ -1,12 +1,12 @@
 name: bilibili-daily-task
 
 
-#on:
+on:
   
   workflow_dispatch: # 手动触发
   schedule: # 计划任务触发
-    - cron: '5 15 * * *' 
-    # cron表达式，时区是UTC时间，比我们早8小时，要用我们的时间减去8小时后填上去，如上所表示的是每天23点5分
+    - cron: '0 16 * * *' 
+    # cron表达式，时区是UTC时间，比我们早8小时，要用我们的时间减去8小时后填上去，如上所表示的是每天00点00分
     # 建议每个人都修改下时间！不要使用默认时间！最好不要设定在整点，错开峰值，避免大量G站同一个IP在相同时间去请求B站接口，导致IP被禁！
     
 
@@ -28,7 +28,21 @@ jobs:
     # 检出
     - name: Checkout
       uses: actions/checkout@v2
-      
+    
+    # 配置一个SLEEP TIME 的环境变量
+    - name: SET ENV
+      run: |
+        echo "SLEEP_TIME=$[$RANDOM%32000+10000]" >> $GITHUB_ENV 
+    # 上述表达的时间 是从(10000,42000)秒,大约休眠到2点三刻到11点三刻左右
+    # 配置一个范围时间.从(n,m) 修改上方'%'符号后改为 %(m-n+1)的值+n 举例(50,100) $RANDOM%51+50
+        
+    #休眠时间
+    - name: SLEEP
+      run: |
+        echo $SLEEP_TIME
+        sleep $SLEEP_TIME
+        
+        
     # .Net 环境
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
